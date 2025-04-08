@@ -33,5 +33,7 @@ print(f"El índice de la columna con el valor máximo es: {max_col}")
 # Mostrar el punto máximo en el gráfico
 ax.scatter(x[max_row, max_col], y[max_row, max_col], z[max_row, max_col], color="red")
 ax.scatter(start[0], start[1], start[2], color="blue")
+ax.set_xlabel("x")
+ax.set_ylabel("y")
 # print(f"({x[max_row, max_col]}, {y[max_row, max_col]}, {z[max_row, max_col]}")
 plt.show()
