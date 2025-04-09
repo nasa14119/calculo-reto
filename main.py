@@ -31,9 +31,17 @@ print(f"El índice de la fila con el valor máximo es: {max_row}")
 print(f"El índice de la columna con el valor máximo es: {max_col}")
 
 # Mostrar el punto máximo en el gráfico
-ax.scatter(x[max_row, max_col], y[max_row, max_col], z[max_row, max_col], color="red")
+puntos_max = [x[max_row, max_col], y[max_row, max_col], z[max_row, max_col]]
+ax.scatter(puntos_max[0], puntos_max[1], puntos_max[2], color="red")
 ax.scatter(start[0], start[1], start[2], color="blue")
 ax.set_xlabel("x")
 ax.set_ylabel("y")
+cors = [0, 0]
+cors[0] = np.arange(np.float16(start[0]), np.float16(puntos_max[0]), -4)
+# cors[1] = np.arange(np.float16(start[1]), np.float16(puntos_max[1]), -4)
+cors[1] = np.linspace(start[1], puntos_max[1], len(cors[0]))
+cors = np.transpose(cors)
+for cor in cors:
+    ax.scatter(cor[0], cor[1], func(cor[0], cor[1]), color="green")
 # print(f"({x[max_row, max_col]}, {y[max_row, max_col]}, {z[max_row, max_col]}")
 plt.show()
