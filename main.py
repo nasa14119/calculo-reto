@@ -43,5 +43,5 @@ cors[1] = np.linspace(start[1], puntos_max[1], len(cors[0]))
 cors = np.transpose(cors)
 for cor in cors:
     ax.scatter(cor[0], cor[1], func(cor[0], cor[1]), color="green")
-# print(f"({x[max_row, max_col]}, {y[max_row, max_col]}, {z[max_row, max_col]}")
+print(f"({x[max_row, max_col]}, {y[max_row, max_col]}, {z[max_row, max_col]}")
 plt.show()
