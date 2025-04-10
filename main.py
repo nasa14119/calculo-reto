@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from grafos import get_graph, astar
 
 
 def func(x, y):
@@ -14,8 +15,8 @@ def func(x, y):
 
 range_values = (0, 100)
 
-x = np.linspace(-range_values[0], range_values[1], 1000)
-y = np.linspace(-range_values[0], range_values[1], 1000)
+x = np.linspace(-range_values[0], range_values[1], 100)
+y = np.linspace(-range_values[0], range_values[1], 100)
 start = [100, 50, func(100, 50)]
 x, y = np.meshgrid(x, y)
 z = func(x, y)
@@ -37,11 +38,18 @@ ax.scatter(start[0], start[1], start[2], color="blue")
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 cors = [0, 0]
-cors[0] = np.arange(np.float16(start[0]), np.float16(puntos_max[0]), -4)
-# cors[1] = np.arange(np.float16(start[1]), np.float16(puntos_max[1]), -4)
-cors[1] = np.linspace(start[1], puntos_max[1], len(cors[0]))
-cors = np.transpose(cors)
-for cor in cors:
-    ax.scatter(cor[0], cor[1], func(cor[0], cor[1]), color="green")
+# cors[0] = np.arange(np.float16(start[0]), np.float16(puntos_max[0]), -4)
+# cors[1] = np.linspace(start[1], puntos_max[1], len(cors[0]))
+# cors = np.transpose(cors)
+# for cor in cors:
+#     ax.scatter(cor[0], cor[1], func(cor[0], cor[1]), color="green")
 print(f"({x[max_row, max_col]}, {y[max_row, max_col]}, {z[max_row, max_col]}")
+data = np.vstack([x.ravel(), y.ravel(), z.ravel()]).T
+graph = get_graph(data, start, puntos_max, ax)
+
+# for u, v in graph.edges:
+#     x = [u[0], v[0]]
+#     y = [u[1], v[1]]
+#     z = [u[2], v[2]]
+#     ax.plot(x, y, z, c="gray", linewidth=0.5)
 plt.show()
