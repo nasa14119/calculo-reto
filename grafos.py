@@ -4,6 +4,7 @@ import networkx as nx
 import numpy as np
 
 step = 1
+get_distance = lambda cor1, cor2: np.linalg.norm([cor2[0] - cor1[0], cor2[1] - cor1[1]])
 
 
 def get_graph(puntos, start, end, ax):
@@ -11,38 +12,44 @@ def get_graph(puntos, start, end, ax):
     end = tuple(end)
     G = nx.Graph()
     # # Crear los nodos
-    for p in puntos:
-        G.add_node(tuple(p))
     G.add_node(start)
     G.add_node(end)
-    # Usamos KDTree para encontrar vecinos cercanos
-    tree = KDTree(puntos)
 
-    for i, p in enumerate(puntos):
-        # Buscar puntos cercanos a p dentro del radio
-        indices = tree.query_ball_point(p, 4)
-        for j in indices:
-            if i != j:
-                q = puntos[j]
-                distancia = np.linalg.norm(
-                    np.array(p) - np.array(q)
-                )  # Calcular distancia euclidiana 3D
-                G.add_edge(tuple(p), tuple(q), weight=distancia)  # Agregar la arista
-    # G.add_edge(
-    #     tuple(start), tuple(end), weight=np.linalg.norm(np.array(start) - np.array(end))
-    # )
+    for line in puntos:
+        for punto in line:
+            G.add_node(tuple(punto))
 
-    # nodos = list(G.nodes)
-    # ax.scatter(
-    #     [nodo[0] for nodo in nodos],
-    #     [nodo[1] for nodo in nodos],
-    #     [nodo[2] for nodo in nodos],
-    #     color="green",
-    # )
+    # Adding first edge
+    for punto in puntos[-1]:
+        distance = get_distance(end, punto)
+        if distance <= 5:
+            G.add_edge(tuple(punto), end, weight=distance)
+
+    # Adding first edges
+    for punto in puntos[0]:
+        distance = get_distance(punto, start)
+        if distance <= 5:
+            G.add_edge(tuple(punto), start, weight=distance)
+    for i in range(0, len(puntos) - 1):
+        line = puntos[i]
+        next_line = puntos[i + 1]
+        for punto in line:
+            for next_node in next_line:
+                distance = get_distance(next_node, punto)
+                if distance < 5:
+                    G.add_edge(tuple(punto), tuple(next_node), weight=distance)
+    for u, v in G.edges:
+        x = [u[0], v[0]]
+        y = [u[1], v[1]]
+        z = [u[2], v[2]]
+        ax.plot(x, y, z, c="gray", linewidth=2.5, alpha=0.5)
     return G
 
 
 def astar(graph, start, end):
+    start = tuple(start)
+    end = tuple(end)
+
     # Función heurística (distancia euclidiana)
     def heuristic(a, b):
         return np.linalg.norm(np.array(a) - np.array(b))

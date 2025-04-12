@@ -6,7 +6,7 @@ PRESICION = 10
 
 def get_points_line(start, end):
     cors = [0, 0, 0]
-    cors[0] = np.arange(np.float16(start[0]), np.float16(end[0]), -4)
+    cors[0] = np.arange(np.float16(start[0]), np.float16(end[0]), -2)
     cors[1] = np.linspace(start[1], end[1], len(cors[0]))
     cors[2] = func(cors[0], cors[1])
     return np.transpose(cors)
@@ -27,7 +27,7 @@ def get_points_graph(start, end, ax):
         x = np.linspace(x1 - 10, x1 + 10, PRESICION)
         y = lin_func(x, i)
         z = func(x, y)
-        ax.scatter(x, y, z, c="green")
+        ax.scatter(x, y, z, c="green", alpha=0.4)
         temp.append(np.vstack([x, y, z]).T)
     cors = temp
     return cors
