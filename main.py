@@ -2,12 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from grafos import get_graph, astar
-from get_points import get_points_graph, get_points_line
+from get_points import get_points_graph
 from func import func
+import config
 
-
-x = np.linspace(10, 100, 100)
-y = np.linspace(-20, 60, 100)
+x = np.linspace(
+    config.MONTAIN_X_RANGE[0], config.MONTAIN_X_RANGE[1], config.MONTAIN_DENSITY
+)
+y = np.linspace(
+    config.MONTAIN_Y_RANGE[0], config.MONTAIN_Y_RANGE[1], config.MONTAIN_DENSITY
+)
 start = [100, 50, func(100, 50)]
 x, y = np.meshgrid(x, y)
 z = func(x, y)
@@ -35,5 +39,4 @@ for i in range(len(path) - 1):
     y = [p1[1], p2[1]]
     z = [p1[2], p2[2]]
     ax.plot(x, y, z, c="red", linewidth=2, label="Camino óptimo" if i == 0 else "")
-
 plt.show()
