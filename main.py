@@ -25,9 +25,7 @@ ax.scatter(puntos_max[0], puntos_max[1], puntos_max[2], color="red")
 ax.scatter(start[0], start[1], start[2], color="blue")
 ax.set_xlabel("x")
 ax.set_ylabel("y")
-# cors = get_points_line(start, puntos_max, ax)
 data = get_points_graph(start, puntos_max, ax)
-# data = np.vstack([x.ravel(), y.ravel(), z.ravel()]).T
 graph = get_graph(data, start, puntos_max, ax)
 path = astar(graph, start, puntos_max)
 for i in range(len(path) - 1):
@@ -37,9 +35,5 @@ for i in range(len(path) - 1):
     y = [p1[1], p2[1]]
     z = [p1[2], p2[2]]
     ax.plot(x, y, z, c="red", linewidth=2, label="Camino óptimo" if i == 0 else "")
-# for u, v in graph.edges:
-#     x = [u[0], v[0]]
-#     y = [u[1], v[1]]
-#     z = [u[2], v[2]]
-#     ax.plot(x, y, z, c="gray", linewidth=0.5)
+
 plt.show()

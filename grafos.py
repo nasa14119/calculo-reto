@@ -1,7 +1,7 @@
 import heapq
-from scipy.spatial import KDTree
 import networkx as nx
 import numpy as np
+from func import gradient_func
 
 step = 1
 get_distance = lambda cor1, cor2: np.linalg.norm([cor2[0] - cor1[0], cor2[1] - cor1[1]])
@@ -38,11 +38,11 @@ def get_graph(puntos, start, end, ax):
                 distance = get_distance(next_node, punto)
                 if distance < 5:
                     G.add_edge(tuple(punto), tuple(next_node), weight=distance)
-    for u, v in G.edges:
-        x = [u[0], v[0]]
-        y = [u[1], v[1]]
-        z = [u[2], v[2]]
-        ax.plot(x, y, z, c="gray", linewidth=2.5, alpha=0.5)
+    # for u, v in G.edges:
+    #     x = [u[0], v[0]]
+    #     y = [u[1], v[1]]
+    #     z = [u[2], v[2]]
+    #     ax.plot(x, y, z, c="gray", linewidth=2.5, alpha=0.5)
     return G
 
 
@@ -51,8 +51,15 @@ def astar(graph, start, end):
     end = tuple(end)
 
     # Función heurística (distancia euclidiana)
-    def heuristic(a, b):
-        return np.linalg.norm(np.array(a) - np.array(b))
+    def heuristic(a, b, c):
+        V = np.array(a) - np.array(c)
+        u = np.array([V[0], V[1]]) / np.linalg.norm(V)
+        grad_punto = gradient_func(a[0], a[1])
+        ang = np.abs(np.degrees(np.arctan(np.dot(grad_punto, u))))
+        if isinstance(ang, np.ndarray):
+            return 1
+        # return np.exp(10 / np.abs(30 - ang))
+        return np.exp(ang - 31)
 
     # Inicialización de los valores
     open_list = []
@@ -61,7 +68,7 @@ def astar(graph, start, end):
 
     # Diccionarios para almacenar los valores g y f
     g_score = {start: 0}
-    f_score = {start: heuristic(start, end)}
+    f_score = {start: heuristic(start, end, graph)}
 
     # Se utiliza una cola de prioridad basada en el valor de f(n)
     heapq.heappush(open_list, (f_score[start], start))
@@ -92,7 +99,9 @@ def astar(graph, start, end):
             if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
                 came_from[neighbor] = current
                 g_score[neighbor] = tentative_g_score
-                f_score[neighbor] = tentative_g_score + heuristic(neighbor, end)
+                f_score[neighbor] = tentative_g_score + heuristic(
+                    neighbor, end, current
+                )
                 heapq.heappush(open_list, (f_score[neighbor], neighbor))
 
     return None  # Si no se encuentra un camino
