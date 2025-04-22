@@ -23,7 +23,7 @@ def get_points_graph(start, end, ax):
     temp = list()
     for i in range(1, len(cors)):
         x1 = cors[i][0]
-        x = np.linspace(x1 - 10, x1 + 10, config.LINE_DENSITY)
+        x = np.linspace(x1 - 10, x1 + 10, config.ROW_DENSITY)
         y = lin_func(x, i)
         z = func(x, y)
         # ax.scatter(x, y, z, c="green", alpha=0.10)

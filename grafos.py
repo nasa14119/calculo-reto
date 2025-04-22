@@ -50,7 +50,6 @@ def get_graph(puntos, start, end, ax):
 def astar(graph, start, end):
     start = tuple(start)
     end = tuple(end)
-    traversed_paths = nx.Graph()
 
     # Función heurística (distancia euclidiana)
     def heuristic(a, c):
