@@ -18,3 +18,10 @@ def gradient_func(x, y):
         np.pi * x * np.pow(50.0, -1)
     ) * np.sin(np.pi * y * np.pow(50.0, -1))
     return np.array([func_x(x, y), func_y(x, y)])
+
+
+def get_angulo(node, next_node):
+    V = np.array(next_node) - np.array(node)
+    u = np.array([V[0], V[1]]) / np.linalg.norm(V)
+    grad_punto = gradient_func(node[0], node[1])
+    return np.abs(np.degrees(np.arctan(np.dot(grad_punto, u))))

@@ -59,7 +59,7 @@ def astar(graph, start, end):
         ang = np.abs(np.degrees(np.arctan(np.dot(grad_punto, u))))
         if isinstance(ang, np.ndarray):
             return 1
-        return np.exp(ang - 31)
+        return np.exp(ang - 21)
 
     # Inicialización de los valores
     open_list = []
